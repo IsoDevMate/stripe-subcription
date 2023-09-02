@@ -1,7 +1,7 @@
 const stripe =require('stripe')(process.env.STRIPE_SECRET_KEY );
 const express = require('express')
 const app=express()
-dotenv.config()
+require('dotenv').config()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const routing =require('./routes/routing')
