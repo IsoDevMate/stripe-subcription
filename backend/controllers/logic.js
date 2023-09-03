@@ -28,39 +28,64 @@ exports.checkout = asyncHandler(async (req, res) => {
 //create a new customer and a new subscription in Stripe when a POST request is made to this endpoint.
  
 exports.customer= asyncHandler(async (req, res) => {
-//create a 
+try {
+  
   const {name,email,source,paymentMethod,priceId,plan}=req.body
 
-//create a new customer for subscription
-
-const customer = await stripe.customers.create({
-
-email:email,
-source: source.stripeToken,
-name:name,
-invoice_settings: {
-  default_payment_method:paymentMethod
-}
-});
-
-const subscription = await stripe.subscriptions.create({
-  customer: customer.id,
-  items: [
-    {/* price:priceId */
-  plan:plan
+  //create a new customer for subscription
+  
+  const customer = await stripe.customers.create({
+  
+  email:email,
+  source: source.stripeToken,
+  name:name,
+  invoice_settings: {
+    default_payment_method:paymentMethod
   }
-  ],
-  payment_settings: {
-    payment_method_options:{
+  });
+  
+  const subscription = await stripe.subscriptions.create({
+    customer: customer.id,
+    items: [
+      {/* price:priceId */
+    plan:plan
+    }
+    ],
+    payment_settings: {
+      payment_method_options:{
+      card:{
+        request_three_d_secure:"any"
+      }
+      } ,
+      payment_method_types: ['card'],
+      save_default_payment_method: 'on-subscription'
+    },
+    payment_behavior:collection_method=charge_automatically,
+    expand:["latest_invoice.payment_intent"]
+  });
+  
 
-    } ,
-    payment_method_types: ['card'],
-    save_default_payment_method: 'on-subscription'
-  },
-  payment_behavior:collection_method=charge_automatically
-});
+  //clientsecret that will be used in frontend for successfull payment and subscriptionid what will be used in your database for future work process.
+  res.json({ /* subscription  */
+  error:false,
+  message:"subscription created successfully",
+  data:{
+    client_secret:subscription.payment_intent.latest_invoice.client_secret,
+    subscriptionId:subscription.id
+  }
+  
+  });
+  
+} catch (error) {
+ res.status(500).json({
+  error:true,
+  message:`${error.message}`,
+  data:null
 
-res.json({ subscription });
+ })
+
+}
+
 });
 
 
