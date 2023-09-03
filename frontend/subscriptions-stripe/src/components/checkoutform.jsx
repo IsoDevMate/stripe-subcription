@@ -1,12 +1,14 @@
 import { PaymentElement } from "@stripe/react-stripe-js"
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { createSubscription } from "../apis/apis.jsx";
+import  createSubscription  from "../apis/apis.jsx";
 import { useState,useEffect} from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate } from 'react-router-dom'
+
 //added a keleton loader
 /* const loader = 'auto'; */
+
 const CheckoutForm = () => {
 // Enable the skeleton loader UI for the optimal loading experience.
 //collect data from the user 
@@ -93,7 +95,7 @@ response.data.data.client_secret,
   }else{
     toast("Payment Successful.Subscription Activated")
     setSuccess(true);
-    const subscription_id=response.data.data.subscription.id
+    const subscription_id=response?.data.data.subscription.id
     console.log(subscription_id)
     window.location.href=`/`
   }

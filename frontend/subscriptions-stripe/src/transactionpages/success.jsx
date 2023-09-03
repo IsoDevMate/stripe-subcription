@@ -1,5 +1,5 @@
 
-export const  Success=()=>{ 
+const  Success=()=>{ 
     return ( 
       <> 
         <h2>Thanks for your order!</h2> 
@@ -15,4 +15,4 @@ export const  Success=()=>{
     ); 
   } 
    
-  
+  export default Success;

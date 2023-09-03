@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-
+const stripe =require('stripe')(process.env.STRIPE_SECRET_KEY );
 exports.checkout = asyncHandler(async (req, res) => {
   const { products } = req.body;
   // Create line items

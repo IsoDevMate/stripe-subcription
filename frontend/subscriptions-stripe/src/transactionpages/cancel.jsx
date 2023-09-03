@@ -1,4 +1,4 @@
-export const Cancel=()=> { 
+const Cancel=()=> { 
     return ( 
       <> 
         <h4>Oops! Your payment has been cancelled.</h4> 
@@ -13,4 +13,5 @@ export const Cancel=()=> {
       </> 
     ); 
   } 
+  export default Cancel;
    
